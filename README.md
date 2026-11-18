@@ -54,6 +54,35 @@ MCP가 필요 없으면 설치 인수를 `.`으로 바꿉니다. 위 명령은 �
 
 `text`와 `apply`는 `--in-place` 대신 `--output <새.hwpx>`를 사용할 수 있습니다. 기존 출력 파일은 덮어쓰지 않습니다. `--expect-version <SHA-256>`으로 조회 이후 변경된 문서의 편집을 거부할 수 있습니다. 성공 결과는 stdout JSON, 오류는 stderr JSON과 종료 코드 2로 확인합니다.
 
+## MCP로 에이전트 연결
+
+프로젝트 폴더에서 MCP 옵션을 설치하고 Codex에 로컬 서버를 등록합니다.
+
+```powershell
+$hwpxPython = (Resolve-Path .venv/Scripts/python.exe).Path
+& $hwpxPython -m pip install ".[mcp]"
+codex mcp add hwpx -- $hwpxPython -m hwpx_cli mcp --workspace (Get-Location).Path
+codex mcp list
+```
+
+이 등록 단계는 Codex CLI가 설치된 경우에만 필요합니다. 등록 후 클라이언트에서 서버 도구를 새로 불러오세요. stdio 서버를 직접 실행하면 요청을 기다리므로 출력 없이 대기하는 것이 정상입니다. 다른 MCP 클라이언트에서도 같은 Python 절대 경로와 `-m hwpx_cli mcp --workspace <작업폴더 절대경로>` 인수를 등록할 수 있습니다. `--workspace`는 문서와 삽입할 이미지 경로의 기준 폴더입니다. 등록한 폴더 안에서 상대 경로와 절대 경로를 사용할 수 있습니다. 비밀번호로 보호된 문서는 대화형 CLI로 편집합니다.
+
+| MCP 도구 | 용도 |
+|---|---|
+| `hwpx_create` | `output` 경로에 빈 HWPX 생성 |
+| `hwpx_replace` | 여러 문구를 한 번에 찾아 치환하고 저장·검증 |
+| `hwpx_inspect` | 문단·표·개체 주소와 문서 버전 조회. `kind` 또는 `target`으로 범위 지정 |
+| `hwpx_find` | `text`로 검색하고 대상 주소와 텍스트 범위 조회 |
+| `hwpx_operations` | `family`로 `table`, `image`, `format` 등의 [연산과 JSON 인수](hwpx_cli/operations.md) 조회 |
+| `hwpx_apply` | 조회한 버전과 `operations`로 편집 후 저장 |
+| `hwpx_validate` | 저장한 HWPX의 구조 확인 |
+
+에이전트에 “`output/working.hwpx`에서 ‘초안’을 모두 ‘최종안’으로 바꾸고 `output/final.hwpx`로 저장해 줘”라고 요청하면 `hwpx_replace`가 한 번의 호출로 처리할 수 있습니다. `replacements`에 `[{"text":"초안","replacement":"최종안"}]`을 전달하면 치환한 개수와 저장본의 검증 결과가 반환됩니다. 하나라도 일치하는 문구가 없으면 전체 배치가 취소됩니다. 길이가 같은 치환은 글자 위치마다 기존 서식 구간을 보존합니다.
+
+특정 위치를 편집할 때는 `hwpx_find` 또는 `hwpx_inspect`의 `version`을 `hwpx_apply`의 `expected_version`으로 전달합니다. 조회는 기본 15개씩 반환하며 `next_offset`이 숫자면 다음 `offset`으로 전달합니다. `hwpx_inspect` 기본 모드는 문단 텍스트를 160자로 제한합니다. 정확한 전문과 XML 속성이 필요하면 해당 `target`을 지정하고 `detail: "full"`로 조회합니다.
+
+`output`은 새 파일 경로이며, 현재 작업 파일을 갱신하려면 `in_place: true`를 지정합니다. 제자리 저장은 CLI의 `history`에서 되돌릴 수 있습니다.
+
 ## 편집 실습: 생성부터 표·그림·Undo/Redo까지
 
 로컬 보고서의 실습 명령과 배치를 저장소만으로 실행할 수 있게 옮겼습니다. 아래 블록을 **위에서부터 순서대로** 실행하세요. 매번 새 출력 폴더를 만들므로 반복 실행해도 이전 결과를 덮어쓰지 않습니다. 주소는 이 실습에서 생성한 문서 전용이며 다른 문서에서는 `inspect/find` 결과를 사용합니다.
@@ -129,35 +158,6 @@ hwpx validate $advanced
 ```
 
 다른 터미널에서는 `$work` 변수 대신 출력된 실제 HWPX 경로를 넣으세요. 뷰어가 출력하는 URL에는 접근 토큰이 있으므로 로컬 브라우저에서 그대로 사용합니다.
-
-## MCP로 에이전트 연결
-
-프로젝트 폴더에서 MCP 옵션을 설치하고 Codex에 로컬 서버를 등록합니다.
-
-```powershell
-$hwpxPython = (Resolve-Path .venv/Scripts/python.exe).Path
-& $hwpxPython -m pip install ".[mcp]"
-codex mcp add hwpx -- $hwpxPython -m hwpx_cli mcp --workspace (Get-Location).Path
-codex mcp list
-```
-
-이 등록 단계는 Codex CLI가 설치된 경우에만 필요합니다. 등록 후 클라이언트에서 서버 도구를 새로 불러오세요. stdio 서버를 직접 실행하면 요청을 기다리므로 출력 없이 대기하는 것이 정상입니다. 다른 MCP 클라이언트에서도 같은 Python 절대 경로와 `-m hwpx_cli mcp --workspace <작업폴더 절대경로>` 인수를 등록할 수 있습니다. `--workspace`는 문서와 삽입할 이미지 경로의 기준 폴더입니다. 등록한 폴더 안에서 상대 경로와 절대 경로를 사용할 수 있습니다. 비밀번호로 보호된 문서는 대화형 CLI로 편집합니다.
-
-| MCP 도구 | 용도 |
-|---|---|
-| `hwpx_create` | `output` 경로에 빈 HWPX 생성 |
-| `hwpx_replace` | 여러 문구를 한 번에 찾아 치환하고 저장·검증 |
-| `hwpx_inspect` | 문단·표·개체 주소와 문서 버전 조회. `kind` 또는 `target`으로 범위 지정 |
-| `hwpx_find` | `text`로 검색하고 대상 주소와 텍스트 범위 조회 |
-| `hwpx_operations` | `family`로 `table`, `image`, `format` 등의 [연산과 JSON 인수](hwpx_cli/operations.md) 조회 |
-| `hwpx_apply` | 조회한 버전과 `operations`로 편집 후 저장 |
-| `hwpx_validate` | 저장한 HWPX의 구조 확인 |
-
-에이전트에 “`output/working.hwpx`에서 ‘초안’을 모두 ‘최종안’으로 바꾸고 `output/final.hwpx`로 저장해 줘”라고 요청하면 `hwpx_replace`가 한 번의 호출로 처리할 수 있습니다. `replacements`에 `[{"text":"초안","replacement":"최종안"}]`을 전달하면 치환한 개수와 저장본의 검증 결과가 반환됩니다. 하나라도 일치하는 문구가 없으면 전체 배치가 취소됩니다. 길이가 같은 치환은 글자 위치마다 기존 서식 구간을 보존합니다.
-
-특정 위치를 편집할 때는 `hwpx_find` 또는 `hwpx_inspect`의 `version`을 `hwpx_apply`의 `expected_version`으로 전달합니다. 조회는 기본 15개씩 반환하며 `next_offset`이 숫자면 다음 `offset`으로 전달합니다. `hwpx_inspect` 기본 모드는 문단 텍스트를 160자로 제한합니다. 정확한 전문과 XML 속성이 필요하면 해당 `target`을 지정하고 `detail: "full"`로 조회합니다.
-
-`output`은 새 파일 경로이며, 현재 작업 파일을 갱신하려면 `in_place: true`를 지정합니다. 제자리 저장은 CLI의 `history`에서 되돌릴 수 있습니다.
 
 ## 텍스트 편집과 대상 선택
 
