@@ -1,0 +1,12 @@
+[
+  {
+    "op": "image.insert",
+    "target": "Contents/section0.xml#3",
+    "path": "tests/fixtures/무궁화.webp",
+    "properties": {
+      "width": 50,
+      "height": 32.8,
+      "inline": true
+    }
+  }
+]

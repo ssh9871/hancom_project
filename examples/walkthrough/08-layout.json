@@ -1,0 +1,5 @@
+[
+  {"op":"section.set","index":0,"properties":{"left":18,"right":18}},
+  {"op":"format.paragraph","target":"Contents/section0.xml#1","properties":{"align":"CENTER","line-spacing":180}},
+  {"op":"format.numbering","target":"Contents/section0.xml#2","kind":"number","start":3}
+]

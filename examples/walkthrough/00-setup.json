@@ -1,0 +1,12 @@
+[
+  {
+    "op": "paragraph.insert-after",
+    "target": "Contents/section0.xml#0",
+    "text": ""
+  },
+  {
+    "op": "paragraph.insert-after",
+    "target": "Contents/section0.xml#1",
+    "text": ""
+  }
+]

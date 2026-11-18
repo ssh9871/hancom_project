@@ -1,0 +1,29 @@
+[
+  {
+    "op": "table.create",
+    "target": "Contents/section0.xml#2",
+    "rows": 2,
+    "cols": 2,
+    "values": [
+      [
+        "실천 항목",
+        "담당"
+      ],
+      [
+        "다회용 컵 사용",
+        "홍보팀"
+      ]
+    ],
+    "width": 110,
+    "row_height": 9
+  },
+  {
+    "op": "table.border",
+    "target": "Contents/section0.xml#2/1/0",
+    "properties": {
+      "color": "#39718B",
+      "width": 0.3,
+      "type": "SOLID"
+    }
+  }
+]

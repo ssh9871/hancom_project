@@ -1,0 +1,5 @@
+[
+  {"op":"table.create","target":"Contents/section0.xml#3","rows":2,"cols":3,"values":[["10","20",""],["3","4","5"]],"width":120},
+  {"op":"table.calculate","target":"Contents/section0.xml#3/1/0","formula":"SUM(A1:B1)","row":0,"column":2,"write":true},
+  {"op":"table.border","target":"Contents/section0.xml#3/1/0","properties":{"type":"SOLID","color":"#39718B","width":0.3}}
+]

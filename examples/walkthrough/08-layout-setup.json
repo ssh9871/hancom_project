@@ -1,0 +1,5 @@
+[
+  {"op":"paragraph.insert-after","target":"Contents/section0.xml#0","text":"캠페인 물품 집계"},
+  {"op":"paragraph.insert-after","target":"Contents/section0.xml#1","text":"수량 합산"},
+  {"op":"paragraph.insert-after","target":"Contents/section0.xml#2","text":""}
+]

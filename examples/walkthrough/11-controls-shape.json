@@ -1,0 +1,11 @@
+[
+  {"op":"control.create","target":"Contents/section0.xml#0","kind":"header","text":"환경 캠페인"},
+  {"op":"control.create","target":"Contents/section0.xml#1","kind":"footNote","text":"수량 단위는 개입니다."},
+  {"op":"control.create","target":"Contents/section0.xml#1","kind":"bookmark","name":"inventory"},
+  {"op":"paragraph.insert-after","target":"Contents/section0.xml#3","text":"담당 부서 "},
+  {"op":"paragraph.insert-after","target":"Contents/section0.xml#4","text":"수식 예시 "},
+  {"op":"paragraph.insert-after","target":"Contents/section0.xml#5","text":""},
+  {"op":"control.create","target":"Contents/section0.xml#4","kind":"field","name":"department","text":"운영팀"},
+  {"op":"control.create","target":"Contents/section0.xml#5","kind":"equation","text":"a over b","properties":{"size":14,"width":5,"height":10}},
+  {"op":"shape.create","target":"Contents/section0.xml#6","text":"검토 완료","width":30,"height":15,"fill":"#D4EAE1"}
+]

@@ -1,0 +1,8 @@
+[
+  {"op":"style.create","ident":0,"name":"캠페인 본문"},
+  {"op":"paragraph.insert-after","target":"Contents/section0.xml#6","text":"자료 출처"},
+  {"op":"style.apply","ident":1,"target":"Contents/section0.xml#7"},
+  {"op":"clipboard.html","target":"Contents/section0.xml#7","markup":"<p><b>현장 집계</b><br>담당자 확인</p>이어서 확인<p><u>최종 수치</u></p>"},
+  {"op":"clipboard.copy","target":"Contents/section0.xml#8","destination":"Contents/section0.xml#10"},
+  {"op":"format.paragraph","target":"Contents/section0.xml#7","properties":{"before":4}}
+]

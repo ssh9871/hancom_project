@@ -1,0 +1,8 @@
+[
+  {
+    "op": "table.insert-row",
+    "target": "Contents/section0.xml#2/1/0",
+    "index": 2,
+    "size": 9
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "op": "format.text",
+    "target": "Contents/section0.xml#0",
+    "properties": {
+      "size": 24,
+      "bold": true,
+      "color": "#145C88"
+    }
+  }
+]

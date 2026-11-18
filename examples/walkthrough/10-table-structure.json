@@ -1,0 +1,5 @@
+[
+  {"op":"table.merge","target":"Contents/section0.xml#3/1/0","row":1,"column":0,"end_row":1,"end_column":1},
+  {"op":"table.transpose","target":"Contents/section0.xml#3/1/0"},
+  {"op":"table.resize","target":"Contents/section0.xml#3/1/0","width":120,"height":36}
+]
