@@ -1,0 +1,6 @@
+[
+  {"op":"table.split-cell","target":"Contents/section0.xml#2/1/0","row":3,"column":0},
+  {"op":"table.delete-row","target":"Contents/section0.xml#2/1/0","index":3},
+  {"op":"table.delete-column","target":"Contents/section0.xml#2/1/0","index":3},
+  {"op":"table.transpose","target":"Contents/section0.xml#2/1/0"}
+]

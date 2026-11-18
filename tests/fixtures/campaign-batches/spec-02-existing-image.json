@@ -1,0 +1,4 @@
+[
+  {"op":"image.set","target":"Contents/section0.xml#1/0/3/4/0/0/6/0/0/5/2/0/0/0/0","properties":{"width":10,"height":10}},
+  {"op":"image.set","target":"Contents/section0.xml#1/0/3/4/0/0/0/0/2","properties":{"width":8}}
+]

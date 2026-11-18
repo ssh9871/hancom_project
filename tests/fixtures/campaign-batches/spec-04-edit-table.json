@@ -1,0 +1,7 @@
+[
+  {"op":"text.range","target":"Contents/section0.xml#2/1/0/5/2/0/0","start":0,"end":2,"value":"확정"},
+  {"op":"table.insert-row","target":"Contents/section0.xml#2/1/0","index":3},
+  {"op":"table.insert-column","target":"Contents/section0.xml#2/1/0","index":3},
+  {"op":"table.merge","target":"Contents/section0.xml#2/1/0","row":3,"column":0,"end_row":3,"end_column":2},
+  {"op":"table.resize","target":"Contents/section0.xml#2/1/0","width":145,"height":44}
+]

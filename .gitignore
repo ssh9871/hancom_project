@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+.hwpx-history/
+*.hwpx.bak
+*.hwpx-lock
+build/
+*.egg-info/
+output/
+/docs/
+/archive/
+/vendor/rhwp/
+.env
+.env.*
+!.env.example
+.pytest_cache/
+dist/

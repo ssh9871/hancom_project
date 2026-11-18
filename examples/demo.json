@@ -1,0 +1,8 @@
+[
+  {"op":"text.range","target":"Contents/section0.xml#0","start":0,"end":0,"value":"HWPX CLI 실시간 편집"},
+  {"op":"format.text","target":"Contents/section0.xml#0","properties":{"size":20,"bold":true,"color":"#234C7A"}},
+  {"op":"paragraph.insert-after","target":"Contents/section0.xml#0","text":"터미널에서 내용을 수정하면 rhwp 뷰어가 자동으로 갱신됩니다."},
+  {"op":"paragraph.insert-after","target":"Contents/section0.xml#1","text":""},
+  {"op":"table.create","target":"Contents/section0.xml#2","rows":3,"cols":3,"values":[["기능","담당","상태"],["HWPX 편집·저장","Python","동작 확인"],["읽기·조판·표시","rhwp","자동 갱신"]],"width":150,"row_height":12},
+  {"op":"table.border","target":"Contents/section0.xml#2/1/0","properties":{"color":"#8197AF","width":0.2,"type":"SOLID"}}
+]

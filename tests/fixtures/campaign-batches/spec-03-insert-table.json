@@ -1,0 +1,6 @@
+[
+  {"op":"paragraph.insert-after","target":"Contents/section0.xml#1","text":"QA 새 일정표"},
+  {"op":"format.paragraph","target":"Contents/section0.xml#2","properties":{"page-break":true}},
+  {"op":"table.create","target":"Contents/section0.xml#2","rows":3,"cols":3,"width":120,"row_height":10,"values":[["회차","담당","상태"],["QA-A","운영","초안"],["QA-B","홍보","검토"]]},
+  {"op":"table.border","target":"Contents/section0.xml#2/1/0","properties":{"type":"SOLID","width":0.4,"color":"#B52222"}}
+]
