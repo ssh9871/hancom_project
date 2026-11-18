@@ -56,16 +56,73 @@ MCP가 필요 없으면 설치 인수를 `.`으로 바꿉니다. 위 명령은 �
 
 ## MCP로 에이전트 연결
 
-프로젝트 폴더에서 MCP 옵션을 설치하고 Codex에 로컬 서버를 등록합니다.
+이 서버는 **로컬 stdio MCP를 지원하는 에이전트**에서 사용할 수 있습니다. 아래 공통 준비 후 사용하는 클라이언트의 등록 방법 하나를 선택하세요.
+
+### 공통 준비
+
+프로젝트 폴더에서 MCP 옵션을 설치하고 Python·작업 폴더의 절대 경로를 구합니다. 가상환경을 활성화하지 않아도 됩니다.
 
 ```powershell
 $hwpxPython = (Resolve-Path .venv/Scripts/python.exe).Path
 & $hwpxPython -m pip install ".[mcp]"
-codex mcp add hwpx -- $hwpxPython -m hwpx_cli mcp --workspace (Get-Location).Path
+$hwpxWorkspace = (Get-Location).Path
+```
+
+`--workspace`는 문서와 삽입할 이미지 경로의 기준이자 접근 가능한 폴더입니다. 해당 폴더 안의 상대 경로와 절대 경로를 사용할 수 있습니다. Linux/macOS에서는 `.venv/bin/python`의 절대 경로를 사용합니다. 비밀번호로 보호된 문서는 대화형 CLI로 편집합니다.
+
+### Codex CLI
+
+Codex CLI가 설치된 환경에서 공통 준비와 같은 PowerShell 세션으로 실행합니다.
+
+```powershell
+codex mcp add hwpx -- $hwpxPython -m hwpx_cli mcp --workspace $hwpxWorkspace
 codex mcp list
 ```
 
-이 등록 단계는 Codex CLI가 설치된 경우에만 필요합니다. 등록 후 클라이언트에서 서버 도구를 새로 불러오세요. stdio 서버를 직접 실행하면 요청을 기다리므로 출력 없이 대기하는 것이 정상입니다. 다른 MCP 클라이언트에서도 같은 Python 절대 경로와 `-m hwpx_cli mcp --workspace <작업폴더 절대경로>` 인수를 등록할 수 있습니다. `--workspace`는 문서와 삽입할 이미지 경로의 기준 폴더입니다. 등록한 폴더 안에서 상대 경로와 절대 경로를 사용할 수 있습니다. 비밀번호로 보호된 문서는 대화형 CLI로 편집합니다.
+### Claude Code
+
+Claude Code가 설치된 환경에서 공통 준비와 같은 PowerShell 세션으로 실행합니다. 아래 설정은 현재 프로젝트에서만 사용하는 개인 설정(`local` 범위)입니다.
+
+```powershell
+claude mcp add --transport stdio --scope local hwpx -- $hwpxPython -m hwpx_cli mcp --workspace $hwpxWorkspace
+claude mcp list
+claude mcp get hwpx
+```
+
+Claude Code에서 프로젝트를 연 뒤 `/mcp`로 연결 상태를 확인합니다. 등록 구문과 범위는 [Claude Code 공식 MCP 문서](https://code.claude.com/docs/en/mcp)를 참조하세요.
+
+### 다른 에이전트의 공통 설정
+
+클라이언트의 MCP 설정 화면·설정 파일에서 다음 값을 지정합니다. `--workspace`만으로 Python 모듈 설치 경로가 바뀌지는 않으므로, 반드시 위에서 패키지를 설치한 Python을 사용하세요.
+
+| 설정 | 값 |
+|---|---|
+| 서버 이름 | `hwpx` |
+| 전송 방식 | `stdio` (로컬 명령 실행) |
+| 실행 파일 / command | 가상환경의 Python 절대 경로 |
+| 인수 / args | `-m`, `hwpx_cli`, `mcp`, `--workspace`, 문서 작업 폴더의 절대 경로 |
+
+`mcpServers` 형식을 사용하는 클라이언트의 JSON 예시입니다. 두 경로를 자신의 실제 경로로 바꾸고 기존 서버 설정에 병합하세요. JSON의 `args`는 각 인수를 별도 문자열로 작성하며, 공백이 있는 경로에도 추가 따옴표를 넣지 않습니다.
+
+```json
+{
+  "mcpServers": {
+    "hwpx": {
+      "command": "C:/work/hancom_project/.venv/Scripts/python.exe",
+      "args": [
+        "-m", "hwpx_cli", "mcp", "--workspace",
+        "C:/work/hancom_project"
+      ]
+    }
+  }
+}
+```
+
+설정 파일 위치와 최상위 키는 클라이언트마다 다르므로 해당 제품의 MCP 문서를 따릅니다. 예를 들어 [Cursor 공식 MCP 문서](https://prod.cursor.com/docs/mcp)는 `mcp.json`의 `mcpServers` 설정을 안내합니다. 현재 서버에는 HTTP/SSE 엔드포인트가 없으므로 원격 URL만 받는 클라이언트에는 그대로 연결할 수 없습니다. 원격 실행 환경에서는 그 환경에 Python·패키지·작업 파일을 준비해야 하며, 이 컴퓨터의 `C:/...` 경로를 그대로 사용할 수 없습니다.
+
+등록 후 클라이언트에서 서버 도구를 다시 불러오고 `hwpx_operations`를 호출해 연결을 확인하세요. 클라이언트가 서버 프로세스를 실행·관리하므로 별도 터미널에서 서버를 미리 띄울 필요는 없습니다. 직접 실행했을 때는 stdio 요청을 기다리며 출력 없이 대기하는 것이 정상입니다. Claude Code·Cursor의 제품별 실제 연결은 별도로 검증하지 않았으며, 이 저장소의 MCP 테스트는 표준 stdio 클라이언트로 수행합니다.
+
+### 제공 도구와 편집 흐름
 
 | MCP 도구 | 용도 |
 |---|---|
